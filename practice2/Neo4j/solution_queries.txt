@@ -1,0 +1,28 @@
+1)MATCH (c:Candidate)
+OPTIONAL MATCH (c)-[:HAS_HOBBY]->(h:Hobby)
+OPTIONAL MATCH (c)-[r:WORKED_AT]->(company:Company)
+OPTIONAL MATCH (c)-[:LIVES_IN]->(city:City)
+RETURN c.full_name AS Name,
+       COLLECT(DISTINCT h.name) AS Hobbies,
+       COLLECT(DISTINCT {
+           company: company.name,
+           date_from: r.date_from,
+           date_to: r.date_to
+       }) AS Work_Experiences,
+       city.name AS City
+
+
+2)MATCH (c:Candidate)-[:HAS_HOBBY]->(h:Hobby)
+RETURN DISTINCT h.name AS Hobbies
+
+
+3)MATCH (c:Candidate)-[:LIVES_IN]->(city:City)
+RETURN DISTINCT city.name AS Cities
+
+
+4)MATCH (city:City)<-[:LIVES_IN]-(c:Candidate)-[:HAS_HOBBY]->(h:Hobby)
+RETURN city.name AS City, COLLECT(DISTINCT h.name) AS Hobbies
+
+
+5)MATCH (company:Company)<-[:WORKED_AT]-(c:Candidate)
+RETURN company.name AS Company, COLLECT(DISTINCT c.full_name) AS Workers

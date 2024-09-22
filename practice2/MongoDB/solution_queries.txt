@@ -1,0 +1,28 @@
+1)db.resumes.find().pretty()
+
+
+2)db.resumes.aggregate([
+  { $unwind: "$hobbies" },
+  { $group: { _id: "$hobbies" } },
+  { $project: { hobby: "$_id", _id: 0 } }
+]);
+
+
+3)db.resumes.aggregate([
+  { $group: { _id: "$city" } },
+  { $project: { city: "$_id", _id: 0 } }
+]);
+
+
+4)db.resumes.aggregate([
+  { $unwind: "$hobbies" },
+  { $group: { _id: "$city", hobbies: { $addToSet: "$hobbies" } } },
+  { $project: { city: "$_id", hobbies: 1, _id: 0 } }
+]);
+
+
+5)db.resumes.aggregate([
+  { $unwind: "$work_experience" },
+  { $group: { _id: "$work_experience.company", employees: { $addToSet: "$full_name" } } },
+  { $project: { company: "$_id", employees: 1, _id: 0 } }
+]);

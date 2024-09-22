@@ -1,0 +1,63 @@
+1)SELECT 
+    C.full_name, 
+    CI.name AS city, 
+    STRING_AGG(DISTINCT CONCAT(CO.name, ' (', W.date_from, ' - ', W.date_to, ')'), '; ') AS work_experience,
+    STRING_AGG(DISTINCT H.name, ', ') AS hobbies
+FROM 
+    Candidates C
+LEFT JOIN 
+    CandidateHobbies CH ON C.id = CH.candidate_id
+LEFT JOIN 
+    Hobbies H ON CH.hobby_id = H.id
+LEFT JOIN 
+    WorkHistory W ON C.id = W.candidate_id
+LEFT JOIN 
+    Companies CO ON W.company_id = CO.id
+LEFT JOIN 
+    Cities CI ON C.city_id = CI.id
+GROUP BY 
+    C.id, C.full_name, CI.name
+ORDER BY 
+    C.full_name;
+
+
+2)SELECT DISTINCT H.name 
+FROM CandidateHobbies CH
+JOIN Hobbies H ON CH.hobby_id = H.id;
+
+
+3)SELECT DISTINCT CI.name 
+FROM Candidates C
+JOIN Cities CI ON C.city_id = CI.id;
+
+
+4)SELECT 
+    CI.name AS city, 
+    STRING_AGG(DISTINCT H.name, ', ') AS hobbies
+FROM 
+    Candidates C
+JOIN 
+    Cities CI ON C.city_id = CI.id
+LEFT JOIN 
+    CandidateHobbies CH ON C.id = CH.candidate_id
+LEFT JOIN 
+    Hobbies H ON CH.hobby_id = H.id
+GROUP BY 
+    CI.id, CI.name
+ORDER BY 
+    CI.name;
+
+
+5)SELECT 
+    CO.name AS company, 
+    STRING_AGG(DISTINCT C.full_name, ', ') AS employees
+FROM 
+    Companies CO
+LEFT JOIN 
+    WorkHistory W ON CO.id = W.company_id
+LEFT JOIN 
+    Candidates C ON W.candidate_id = C.id
+GROUP BY 
+    CO.id, CO.name
+ORDER BY 
+    CO.name;
