@@ -1,12 +1,3 @@
--- CREATE TABLE users (
---     id SERIAL PRIMARY KEY,
---     name VARCHAR(100),
---     email VARCHAR(100) UNIQUE
--- );
-
--- INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');
--- INSERT INTO users (name, email) VALUES ('Jane Smith', 'jane@example.com');
-
 CREATE TABLE Companies (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
